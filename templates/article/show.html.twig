@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+    <h2>Article</h2>
+
+    <h3>{{article.titre}}</h3>
+    <div> {{article.description}}</div>
+    <div>Rédigé par <strong>{{article.auteur.prenom}} le {{article.createAt|date("m/d/Y")}} </strong></div>
+
+    <hr>
+
+    {% for comment in article.commentaires %}
+        <div>redigé par {{comment.pseudo}} </div>
+        <div>{{comment.avis}} </div>
+        <div class="mb-2">Le {{comment.createAt | date("m/d/Y")}} </div>
+    {% endfor %}
+
+
+    <div class="my-5">
+        {{form_start(form)}}
+
+        {{form_end(form)}}
+    </div>
+    
+{% endblock %}

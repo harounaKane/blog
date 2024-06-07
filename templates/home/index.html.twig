@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home - Blog{% endblock %}
+
+{% block body %}
+
+<h2>Accueil</h2>
+
+{% for article in articles %}
+    <div><a href="{{path('app_article_show', {'id': article.id})}}">{{article.titre}}</a></div>
+    <div> {{article.description | slice(0, 10)}} ... </div>
+    <div>Rédigé par <strong>{{article.auteur.prenom}} le {{article.createAt|date("m/d/Y")}} </strong></div>
+    <hr>
+{% endfor %}
+
+{% endblock %}
