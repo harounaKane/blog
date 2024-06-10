@@ -1,0 +1,5 @@
+Creer un user : make:user
+Creer une authentification : make auth 
+Creer : make:registrer form 
+
+ajouter des attributs dans user
