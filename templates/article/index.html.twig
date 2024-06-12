@@ -8,7 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Image</th>
                 <th>Titre</th>
                 <th>Description</th>
                 <th>Create_at</th>
@@ -18,9 +18,12 @@
         <tbody>
         {% for article in articles %}
             <tr>
-                <td>{{ article.id }}</td>
+                <td>
+                    <img src="{{asset('logo_repertoire/' ~ article.logo)}}" alt="">
+                    {# <img src="{{asset(article.image)}}" alt=""> #}
+                </td>
                 <td>{{ article.titre }}</td>
-                <td>{{ article.description }}</td>
+                <td>{{ article.description|slice(0, 10) }}...</td>
                 <td>{{ article.createAt ? article.createAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_article_show', {'id': article.id}) }}">show</a>

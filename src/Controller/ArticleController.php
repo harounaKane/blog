@@ -11,9 +11,11 @@ use App\Repository\CommentaireRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ArticleController extends AbstractController
 {
@@ -26,7 +28,7 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/admin/article/new', name: 'app_article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $article = new Article();
         $form = $this->createForm(ArticleType::class, $article);
@@ -34,6 +36,29 @@ class ArticleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try{
+
+                /** @var UploadedFile $brochureFile */
+                $image = $form->get('image')->getData();
+
+                // condition pour vérifier qu'on a uploadé une image
+                if ($image) {
+                    $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    // inclure le nom du fichier
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+
+                    // Déplacement du fichier dans son répertoire de destination
+                    try {
+                        $image->move("logo_repertoire", $newFilename);
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    // updates the 'brochureFilename' property to store the PDF file name
+                    // instead of its contents
+                    $article->setLogo($newFilename);
+                }
+
                 $article->setCreateAt(new \DateTimeImmutable());
                 $entityManager->persist($article);
                 $entityManager->flush();

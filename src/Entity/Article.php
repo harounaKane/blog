@@ -41,6 +41,9 @@ class Article
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'article')]
     private Collection $commentaires;
 
+    #[ORM\Column(length: 100)]
+    private ?string $logo = null;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -139,5 +142,21 @@ class Article
         }
 
         return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(string $logo): static
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getImage(){
+        return "logo_repertoire/" . $this->getLogo();
     }
 }
