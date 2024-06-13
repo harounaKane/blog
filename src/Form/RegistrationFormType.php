@@ -12,8 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -26,7 +25,7 @@ class RegistrationFormType extends AbstractType
             ->add('nom', TextType::class, [
                 "label" => "Nom"
             ])
-            ->add('ville', TextType::class, [
+            ->add('ville', TextType::class, [ 
                 "label" => "Ville",
                 "help" => "Choisir une ville africaine"
             ])
@@ -46,6 +45,9 @@ class RegistrationFormType extends AbstractType
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
+            ])
+            ->add('imageVich', VichFileType::class, [
+                "label" => "Votre avatar"
             ])
             ->add("Valider", SubmitType::class, [
                 "attr" => [

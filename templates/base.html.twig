@@ -23,6 +23,7 @@
                 {% if is_granted("ROLE_ADMIN") %}
                     <a href="{{path('app_article_new')}}" class="btn btn-success">Add Article</a>
                     <a href="{{path('app_categorie_index')}}" class="btn btn-success">Categorie</a>
+                    <a href="{{path('app_user_index')}}" class="btn btn-success">User</a>
                 {% endif %} 
 
                 {% if app.user %}    
